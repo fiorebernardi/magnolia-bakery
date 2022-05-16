@@ -1,0 +1,32 @@
+var script = document.createElement("script");
+script.setAttribute("src", "https://unpkg.com/axios/dist/axios.min.js");
+script.setAttribute("type", "text/javascript");
+document.head.appendChild(script);
+
+script.onload = () => {
+
+    let order = null;
+    let checkout = null;
+
+    if (window.Shopify && window.Shopify.order) {
+        order = window.Shopify.order;
+    }
+    if (window.Shopify && window.Shopify.checkout) {
+        checkout = window.Shopify.checkout;
+    }
+
+    if (
+        document.location.href.indexOf('ref=') > -1 ||
+        document.location.href.indexOf('utm_') > -1
+    ) {
+        axios.post(`https://t.cometlytrack.com/t?uid=`, {
+            order: order,
+            checkout: checkout,
+            location: document.location,
+            referrer: document.referrer,
+            document: document.documentElement.outerHTML,
+        });
+    }
+};
+
+
